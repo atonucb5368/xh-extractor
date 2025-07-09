@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MicroTask Pro - Admin Panel</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        .sidebar {
+            transition: all 0.3s;
+        }
+        .content {
+            transition: all 0.3s;
+        }
+        .active-tab {
+            background-color: #3B82F6;
+            color: white;
+        }
+        .glow-text {
+            text-shadow: 0 0 10px rgba(59, 130, 246, 0.7);
+        }
+        .dashboard-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body class="bg-gray-100 font-sans">
+    <!-- Admin Login Screen -->
+    <div id="adminLogin" class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 z-50">
+        <div class="bg-white rounded-xl p-8 max-w-md w-full mx-4 shadow-2xl">
+            <div class="text-center mb-6">
+                <h1 class="text-2xl font-bold text-blue-600 glow-text">MicroTask<span class="text-emerald-500">Pro</span></h1>
+                <p class="text-gray-600 mt-2">Admin Panel Login</p>
+            </div>
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Admin Username</label>
+                    <input type="text" id="adminUsername" class="w-full px-4 py-2 border rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                    <input type="password" id="adminPassword" class="w-full px-4 py-2 border rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                </div>
+                <button id="adminLoginBtn" class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition duration-200">
+                    Login
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Panel -->
+    <div id="adminPanel" class="hidden">
+        <!-- Sidebar -->
+        <div class="sidebar fixed top-0 left-0 h-full w-64 bg-gray-800 text-white shadow-lg">
+            <div class="p-4 border-b border-gray-700 flex items-center">
+                <div class="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold mr-3">A</div>
+                <div>
+                    <h2 class="font-bold" id="adminName">Admin</h2>
+                    <p class="text-xs text-gray-400">Super Admin</p>
+                </div>
+            </div>
+            <nav class="p-2">
+                <div class="mb-4">
+                    <p class="text-xs uppercase text-gray-400 px-3 py-2">Main</p>
+                    <a href="#" data-tab="dashboard" class="flex items-center px-3 py-2 rounded-lg mb-1 active-tab">
+                        <span class="material-icons mr-2">dashboard</span>
+                        Dashboard
+                    </a>
+                </div>
+                <div class="mb-4">
+                    <p class="text-xs uppercase text-gray-400 px-3 py-2">Management</p>
+                    <a href="#" data-tab="users" class="flex items-center px-3 py-2 rounded-lg mb-1 hover:bg-gray-700">
+                        <span class="material-icons mr-2">people</span>
+                        Users
+                    </a>
+                    <a href="#" data-tab="tasks" class="flex items-center px-3 py-2 rounded-lg mb-1 hover:bg-gray-700">
+                        <span class="material-icons mr-2">task</span>
+                        Tasks
+                    </a>
+                    <a href="#" data-tab="submissions" class="flex items-center px-3 py-2 rounded-lg mb-1 hover:bg-gray-700">
+                        <span class="material-icons mr-2">assignment_turned_in</span>
+                        Submissions
+                    </a>
+                    <a href="#" data-tab="payments" class="flex items-center px-3 py-2 rounded-lg mb-1 hover:bg-gray-700">
+                        <span class="material-icons mr-2">payments</span>
+                        Payments
+                    </a>
+                </div>
+                <div class="mb-4">
+                    <p class="text-xs uppercase text-gray-400 px-3 py-2">Settings</p>
+                    <a href="#" data-tab="settings" class="flex items-center px-3 py-2 rounded-lg mb-1 hover:bg-gray-700">
+                        <span class="material-icons mr-2">settings</span>
+                        System Settings
+                    </a>
+                </div>
+            </nav>
+            <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-700">
+                <button id="logoutAdmin" class="flex items-center text-red-400 hover:text-red-300">
+                    <span class="material-icons mr-2">logout</span>
+                    Logout
+                </button>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="content ml-64 p-6">
+            <!-- Dashboard Tab -->
+            <div id="dashboardTab" class="tab-content">
+                <h1 class="text-2xl font-bold text-gray-800 mb-6">Admin Dashboard</h1>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                    <div class="dashboard-card bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition duration-200">
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <p class="text-gray-500">Total Users</p>
+                                <h3 class="text-3xl font-bold" id="totalUsers">0</h3>
+                            </div>
+                            <div class="bg-blue-100 p-3 rounded-full">
+                                <span class="material-icons text-blue-600">people</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dashboard-card bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition duration-200">
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <p class="text-gray-500">Active Tasks</p>
+                                <h3 class="text-3xl font-bold" id="activeTasks">0</h3>
+                            </div>
+                            <div class="bg-green-100 p-3 rounded-full">
+                                <span class="material-icons text-green-600">task</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dashboard-card bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition duration-200">
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <p class="text-gray-500">Pending Submissions</p>
+                                <h3 class="text-3xl font-bold" id="pendingSubmissions">0</h3>
+                            </div>
+                            <div class="bg-yellow-100 p-3 rounded-full">
+                                <span class="material-icons text-yellow-600">assignment_turned_in</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dashboard-card bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition duration-200">
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <p class="text-gray-500">Payment Requests</p>
+                                <h3 class="text-3xl font-bold" id="paymentRequests">0</h3>
+                            </div>
+                            <div class="bg-purple-100 p-3 rounded-full">
+                                <span class="material-icons text-purple-600">payments</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="bg-white rounded-xl p-6 shadow-md">
+                        <h2 class="text-xl font-semibold mb-4">Recent Users</h2>
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full" id="recentUsersTable">
+                                <thead>
+                                    <tr class="border-b">
+                                        <th class="text-left py-2">Name</th>
+                                        <th class="text-left py-2">Email</th>
+                                        <th class="text-left py-2">Joined</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Recent users will be loaded here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-xl p-6 shadow-md">
+                        <h2 class="text-xl font-semibold mb-4">Recent Submissions</h2>
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full" id="recentSubmissionsTable">
+                                <thead>
+                                    <tr class="border-b">
+                                        <th class="text-left py-2">User</th>
+                                        <th class="text-left py-2">Task</th>
+                                        <th class="text-left py-2">Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Recent submissions will be loaded here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Users Tab -->
+            <div id="usersTab" class="tab-content hidden">
+                <div class="flex justify-between items-center mb-6">
+                    <h1 class="text-2xl font-bold text-gray-800">User Management</h1>
+                    <div class="flex space-x-2">
+                        <input type="text" id="userSearch" placeholder="Search users..." class="px-4 py-2 border rounded-lg">
+                        <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">Search</button>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-md overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">User</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Balance</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tasks</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Joined</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200" id="usersTableBody">
+                                <!-- Users will be loaded here -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="px-6 py-3 border-t flex justify-between items-center">
+                        <div class="text-sm text-gray-500">Showing <span id="usersFrom">1</span> to <span id="usersTo">10</span> of <span id="totalUsersCount">0</span> users</div>
+                        <div class="flex space-x-2">
+                            <button id="prevUsers" class="px-3 py-1 border rounded disabled:opacity-50">Previous</button>
+                            <button id="nextUsers" class="px-3 py-1 border rounded disabled:opacity-50">Next</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tasks Tab -->
+            <div id="tasksTab" class="tab-content hidden">
+                <div class="flex justify-between items-center mb-6">
+                    <h1 class="text-2xl font-bold text-gray-800">Task Management</h1>
+                    <button id="addTaskBtn" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 flex items-center">
+                        <span class="material-icons mr-1">add</span> Add Task
+                    </button>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-md overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Title</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Reward</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Created</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200" id="tasksTableBody">
+                                <!-- Tasks will be loaded here -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="px-6 py-3 border-t flex justify-between items-center">
+                        <div class="text-sm text-gray-500">Showing <span id="tasksFrom">1</span> to <span id="tasksTo">10</span> of <span id="totalTasksCount">0</span> tasks</div>
+                        <div class="flex space-x-2">
+                            <button id="prevTasks" class="px-3 py-1 border rounded disabled:opacity-50">Previous</button>
+                            <button id="nextTasks" class="px-3 py-1 border rounded disabled:opacity-50">Next</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Submissions Tab -->
+            <div id="submissionsTab" class="tab-content hidden">
+                <div class="flex justify-between items-center mb-6">
+                    <h1 class="text-2xl font-bold text-gray-800">Task Submissions</h1>
+                    <div class="flex space-x-2">
+                        <select id="submissionFilter" class="px-4 py-2 border rounded-lg">
+                            <option value="all">All Submissions</option>
+                            <option value="pending">Pending</option>
+                            <option value="approved">Approved</option>
+                            <option value="rejected">Rejected</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-md overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">User</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Task</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Submitted</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200" id="submissionsTableBody">
+                                <!-- Submissions will be loaded here -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="px-6 py-3 border-t flex justify-between items-center">
+                        <div class="text-sm text-gray-500">Showing <span id="submissionsFrom">1</span> to <span id="submissionsTo">10</span> of <span id="totalSubmissionsCount">0</span> submissions</div>
+                        <div class="flex space-x-2">
+                            <button id="prevSubmissions" class="px-3 py-1 border rounded disabled:opacity-50">Previous</button>
+                            <button id="nextSubmissions" class="px-3 py-1 border rounded disabled:opacity-50">Next</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Payments Tab -->
+            <div id="paymentsTab" class="tab-content hidden">
+                <div class="flex justify-between items-center mb-6">
+                    <h1 class="text-2xl font-bold text-gray-800">Payment Requests</h1>
+                    <div class="flex space-x-2">
+                        <select id="paymentFilter" class="px-4 py-2 border rounded-lg">
+                            <option value="all">All Requests</option>
+                            <option value="pending">Pending</option>
+                            <option value="processed">Processed</option>
+                            <option value="rejected">Rejected</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-md overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">User</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Method</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Requested</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200" id="paymentsTableBody">
+                                <!-- Payments will be loaded here -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="px-6 py-3 border-t flex justify-between items-center">
+                        <div class="text-sm text-gray-500">Showing <span id="paymentsFrom">1</span> to <span id="paymentsTo">10</span> of <span id="totalPaymentsCount">0</span> requests</div>
+                        <div class="flex space-x-2">
+                            <button id="prevPayments" class="px-3 py-1 border rounded disabled:opacity-50">Previous</button>
+                            <button id="nextPayments" class="px-3 py-1 border rounded disabled:opacity-50">Next</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Settings Tab -->
+            <div id="settingsTab" class="tab-content hidden">
+                <h1 class="text-2xl font-bold text-gray-800 mb-6">System Settings</h1>
+                
+                <div class="bg-white rounded-xl shadow-md p-6 mb-6">
+                    <h2 class="text-xl font-semibold mb-4">General Settings</h2>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Site Name</label>
+                            <input type="text" id="siteName" class="w-full px-4 py-2 border rounded-lg" value="MicroTask Pro">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Default Bonus</label>
+                            <input type="number" id="defaultBonus" class="w-full px-4 py-2 border rounded-lg" value="0.50" step="0.01">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Minimum Payout</label>
+                            <input type="number" id="minPayout" class="w-full px-4 py-2 border rounded-lg" value="5.00" step="0.01">
+                        </div>
+                    </div>
+                    <button id="saveGeneralSettings" class="mt-4 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">Save Changes</button>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-md p-6">
+                    <h2 class="text-xl font-semibold mb-4">Admin Credentials</h2>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Admin Username</label>
+                            <input type="text" id="adminUsernameSetting" class="w-full px-4 py-2 border rounded-lg" placeholder="Change admin username">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">New Password</label>
+                            <input type="password" id="adminNewPassword" class="w-full px-4 py-2 border rounded-lg" placeholder="Enter new password">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Confirm Password</label>
+                            <input type="password" id="adminConfirmPassword" class="w-full px-4 py-2 border rounded-lg" placeholder="Confirm new password">
+                        </div>
+                    </div>
+                    <button id="saveAdminCredentials" class="mt-4 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">Update Credentials</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Task Modal -->
+    <div id="addTaskModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center hidden">
+        <div class="bg-white rounded-xl p-6 max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-bold">Add New Task</h3>
+                <button id="closeAddTaskModal" class="p-1 rounded-full hover:bg-gray-100">
+                    <span class="material-icons">close</span>
+                </button>
+            </div>
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium mb-1">Task Title</label>
+                    <input type="text" id="taskTitle" class="w-full px-4 py-2 border rounded-lg">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1">Description</label>
+                    <textarea id="taskDescription" class="w-full px-4 py-2 border rounded-lg" rows="3"></textarea>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium mb-1">Reward Amount ($)</label>
+                        <input type="number" id="taskReward" class="w-full px-4 py-2 border rounded-lg" step="0.01" min="0.01">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-1">Category</label>
+                        <select id="taskCategory" class="w-full px-4 py-2 border rounded-lg">
+                            <option value="Social Media">Social Media</option>
+                            <option value="Survey">Survey</option>
+                            <option value="Registration">Registration</option>
+                            <option value="Video">Video</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1">Requirements</label>
+                    <textarea id="taskRequirements" class="w-full px-4 py-2 border rounded-lg" rows="2"></textarea>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1">Instructions</label>
+                    <textarea id="taskInstructions" class="w-full px-4 py-2 border rounded-lg" rows="4"></textarea>
+                </div>
+                <div class="flex justify-end space-x-2">
+                    <button id="cancelAddTask" class="px-4 py-2 border rounded-lg">Cancel</button>
+                    <button id="saveTask" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Save Task</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- View Submission Modal -->
+    <div id="viewSubmissionModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center hidden">
+        <div class="bg-white rounded-xl p-6 max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-bold">Submission Details</h3>
+                <button id="closeViewSubmissionModal" class="p-1 rounded-full hover:bg-gray-100">
+                    <span class="material-icons">close</span>
+                </button>
+            </div>
+            <div class="space-y-4">
+                <div>
+                    <h4 class="font-medium mb-2">User Information</h4>
+                    <div class="bg-gray-50 p-3 rounded-lg">
+                        <p id="submissionUserName"></p>
+                        <p id="submissionUserEmail" class="text-sm text-gray-600"></p>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="font-medium mb-2">Task Information</h4>
+                    <div class="bg-gray-50 p-3 rounded-lg">
+                        <p id="submissionTaskTitle" class="font-medium"></p>
+                        <p id="submissionTaskReward" class="text-sm text-gray-600"></p>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="font-medium mb-2">Submitted Proof</h4>
+                    <div class="bg-gray-50 p-3 rounded-lg">
+                        <img id="submissionProofImage" src="" alt="Proof" class="max-w-full h-auto rounded border">
+                        <p id="submissionProofText" class="mt-2"></p>
+                    </div>
+                </div>
+                <div class="flex justify-between items-center mt-6">
+                    <button id="rejectSubmission" class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600">Reject</button>
+                    <button id="approveSubmission" class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600">Approve</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- View Payment Modal -->
+    <div id="viewPaymentModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center hidden">
+        <div class="bg-white rounded-xl p-6 max-w-md w-full mx-4">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-bold">Payment Request</h3>
+                <button id="closeViewPaymentModal" class="p-1 rounded-full hover:bg-gray-100">
+                    <span class="material-icons">close</span>
+                </button>
+            </div>
+            <div class="space-y-4">
+                <div>
+                    <h4 class="font-medium mb-2">User Information</h4>
+                    <div class="bg-gray-50 p-3 rounded-lg">
+                        <p id="paymentUserName"></p>
+                        <p id="paymentUserEmail" class="text-sm text-gray-600"></p>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="font-medium mb-2">Payment Details</h4>
+                    <div class="bg-gray-50 p-3 rounded-lg">
+                        <p>Amount: $<span id="paymentAmount"></span></p>
+                        <p>Method: <span id="paymentMethod"></span></p>
+                        <p>Account: <span id="paymentAccount"></span></p>
+                    </div>
+                </div>
+                <div class="flex justify-between items-center mt-6">
+                    <button id="rejectPayment" class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600">Reject</button>
+                    <button id="approvePayment" class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600">Approve</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="firebase-config.js"></script>
+    <script>
+        // DOM Elements
+        const adminLogin = document.getElementById('adminLogin');
+        const adminPanel = document.getElementById('adminPanel');
+        const adminLoginBtn = document.getElementById('adminLoginBtn');
+        const adminUsername = document.getElementById('adminUsername');
+        const adminPassword = document.getElementById('adminPassword');
+        const logoutAdmin = document.getElementById('logoutAdmin');
+        
+        // Tab navigation
+        const tabLinks = document.querySelectorAll('[data-tab]');
+        const tabContents = document.querySelectorAll('.tab-content');
+        
+        // Dashboard elements
+        const totalUsers = document.getElementById('totalUsers');
+        const activeTasks = document.getElementById('activeTasks');
+        const pendingSubmissions = document.getElementById('pendingSubmissions');
+        const paymentRequests = document.getElementById('paymentRequests');
+        const recentUsersTable = document.getElementById('recentUsersTable').querySelector('tbody');
+        const recentSubmissionsTable = document.getElementById('recentSubmissionsTable').querySelector('tbody');
+        
+        // Users tab elements
+        const usersTableBody = document.getElementById('usersTableBody');
+        
+        // Tasks tab elements
+        const tasksTableBody = document.getElementById('tasksTableBody');
+        const addTaskBtn = document.getElementById('addTaskBtn');
+        const addTaskModal = document.getElementById('addTaskModal');
+        const closeAddTaskModal = document.getElementById('closeAddTaskModal');
+        const cancelAddTask = document.getElementById('cancelAddTask');
+        const saveTask = document.getElementById('saveTask');
+        
+        // Submissions tab elements
+        const submissionsTableBody = document.getElementById('submissionsTableBody');
+        const viewSubmissionModal = document.getElementById('viewSubmissionModal');
+        const closeViewSubmissionModal = document.getElementById('closeViewSubmissionModal');
+        const rejectSubmission = document.getElementById('rejectSubmission');
+        const approveSubmission = document.getElementById('approveSubmission');
+        
+        // Payments tab elements
+        const paymentsTableBody = document.getElementById('paymentsTableBody');
+        const viewPaymentModal = document.getElementById('viewPaymentModal');
+        const closeViewPaymentModal = document.getElementById('closeViewPaymentModal');
+        const rejectPayment = document.getElementById('rejectPayment');
+        const approvePayment = document.getElementById('approvePayment');
+        
+        // Settings tab elements
+        const saveGeneralSettings = document.getElementById('saveGeneralSettings');
+        const saveAdminCredentials = document.getElementById('saveAdminCredentials');
+
+        // Admin credentials (in a real app, these would be stored securely)
+        const ADMIN_CREDENTIALS = {
+            username: "admin",
+            password: "SecurePassword123!" // In production, use proper authentication
+        };
+
+        // Sample data (in a real app, this would come from Firebase)
+        const sampleUsers = [
+            { id: "user1", name: "John Doe", email: "john@example.com", balance: 12.50, tasksCompleted: 15, joined: "2023-05-15" },
+            { id: "user2", name: "Jane Smith", email: "jane@example.com", balance: 8.75, tasksCompleted: 10, joined: "2023-06-20" },
+            { id: "user3", name: "Mike Johnson", email: "mike@example.com", balance: 20.00, tasksCompleted: 25, joined: "2023-04-10" },
+            { id: "user4", name: "Sarah Williams", email: "sarah@example.com", balance: 5.25, tasksCompleted: 7, joined: "2023-07-05" },
+            { id: "user5", name: "David Brown", email: "david@example.com", balance: 15.00, tasksCompleted: 18, joined: "2023-05-30" }
+        ];
+
+        const sampleTasksAdmin = [
+            { id: "task1", title: "Like Facebook Post", category: "Social Media", reward: 0.25, status: "Active", created: "2023-06-01" },
+            { id: "task2", title: "Complete Survey", category: "Survey", reward: 0.75, status: "Active", created: "2023-06-05" },
+            { id: "task3", title: "Watch Video", category: "Video", reward: 0.15, status: "Inactive", created: "2023-06-10" },
+            { id: "task4", title: "Sign Up Newsletter", category: "Registration", reward: 0.50, status: "Active", created: "2023-06-15" },
+            { id: "task5", title: "App Testing", category: "Other", reward: 1.00, status: "Active", created: "2023-06-20" }
+        ];
+
+        const sampleSubmissions = [
+            { id: "sub1", userId: "user1", userName: "John Doe", taskId: "task1", taskTitle: "Like Facebook Post", submitted: "2023-07-01", status: "Pending" },
+            { id: "sub2", userId: "user2", userName: "Jane Smith", taskId: "task2", taskTitle: "Complete Survey", submitted: "2023-07-02", status: "Approved" },
+            { id: "sub3", userId: "user3", userName: "Mike Johnson", taskId: "task4", taskTitle: "Sign Up Newsletter", submitted: "2023-07-03", status: "Rejected" },
+            { id: "sub4", userId: "user4", userName: "Sarah Williams", taskId: "task1", taskTitle: "Like Facebook Post", submitted: "2023-07-04", status: "Pending" },
+            { id: "sub5", userId: "user5", userName: "David Brown", taskId: "task5", taskTitle: "App Testing", submitted: "2023-07-05", status: "Pending" }
+        ];
+
+        const samplePayments = [
+            { id: "pay1", userId: "user1", userName: "John Doe", amount: 10.00, method: "PayPal", account: "john@example.com", requested: "2023-07-01", status: "Pending" },
+            { id: "pay2", userId: "user3", userName: "Mike Johnson", amount: 15.00, method: "Bank Transfer", account: "XXXX-XXXX-1234", requested: "2023-07-02", status: "Processed" },
+            { id: "pay3", userId: "user5", userName: "David Brown", amount: 8.00, method: "PayPal", account: "david@example.com", requested: "2023-07-03", status: "Rejected" }
+        ];
+
+        // Initialize the admin panel
+        function initAdminPanel() {
+            // Check if already logged in
+            const isLoggedIn = localStorage.getItem('adminLoggedIn') === 'true';
+            if (isLoggedIn) {
+                adminLogin.classList.add('hidden');
+                adminPanel.classList.remove('hidden');
+                loadDashboardData();
+            }
+
+            // Tab navigation
+            tabLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const tabId = link.getAttribute('data-tab');
+                    
+                    // Update active tab styling
+                    tabLinks.forEach(t => t.classList.remove('active-tab'));
+                    link.classList.add('active-tab');
+                    
+                    // Show the selected tab content
+                    tabContents.forEach(content => content.classList.add('hidden'));
+                    document.getElementById(`${tabId}Tab`).classList.remove('hidden');
+                    
+                    // Load data for the tab if needed
+                    switch(tabId) {
+                        case 'users':
+                            loadUsersData();
+                            break;
+                        case 'tasks':
+                            loadTasksData();
+                            break;
+                        case 'submissions':
+                            loadSubmissionsData();
+                            break;
+                        case 'payments':
+                            loadPaymentsData();
+                            break;
+                    }
+                });
+            });
+
+            // Admin login
+            adminLoginBtn.addEventListener('click', () => {
+                const username = adminUsername.value.trim();
+                const password = adminPassword.value.trim();
+                
+                if (username === ADMIN_CREDENTIALS.username && password === ADMIN_CREDENTIALS.password) {
+                    // Successful login
+                    localStorage.setItem('adminLoggedIn', 'true');
+                    adminLogin.classList.add('hidden');
+                    adminPanel.classList.remove('hidden');
+                    loadDashboardData();
+                } else {
+                    alert('Invalid admin credentials');
+                }
+            });
+
+            // Logout
+            logoutAdmin.addEventListener('click', () => {
+                localStorage.removeItem('adminLoggedIn');
+                adminLogin.classList.remove('hidden');
+                adminPanel.classList.add('hidden');
+                adminUsername.value = '';
+                adminPassword.value = '';
+            });
+
+            // Task management
+            addTaskBtn.addEventListener('click', () => {
+                addTaskModal.classList.remove('hidden');
+            });
+
+            closeAddTaskModal.addEventListener('click', () => {
+                addTaskModal.classList.add('hidden');
+            });
+
+            cancelAddTask.addEventListener('click', () => {
+                addTaskModal.classList.add('hidden');
+            });
+
+            saveTask.addEventListener('click', () => {
+                // In a real app, save to Firebase
+                alert('Task saved! (In a real app, this would save to Firebase)');
+                addTaskModal.classList.add('hidden');
+                loadTasksData();
+            });
+
+            // Submissions management
+            submissionsTableBody.addEventListener('click', (e) => {
+                if (e.target.classList.contains('view-submission')) {
+                    const submissionId = e.target.getAttribute('data-submission-id');
+                    openSubmissionModal(submissionId);
+                }
+            });
+
+            closeViewSubmissionModal.addEventListener('click', () => {
+                viewSubmissionModal.classList.add('hidden');
+            });
+
+            approveSubmission.addEventListener('click', () => {
+                // In a real app, update in Firebase
+                alert('Submission approved! (In a real app, this would update in Firebase)');
+                viewSubmissionModal.classList.add('hidden');
+                loadSubmissionsData();
+                loadDashboardData();
+            });
+
+            rejectSubmission.addEventListener('click', () => {
+                // In a real app, update in Firebase
+                alert('Submission rejected! (In a real app, this would update in Firebase)');
+                viewSubmissionModal.classList.add('hidden');
+                loadSubmissionsData();
+                loadDashboardData();
+            });
+
+            // Payments management
+            paymentsTableBody.addEventListener('click', (e) => {
+                if (e.target.classList.contains('view-payment')) {
+                    const paymentId = e.target.getAttribute('data-payment-id');
+                    openPaymentModal(paymentId);
+                }
+            });
+
+            closeViewPaymentModal.addEventListener('click', () => {
+                viewPaymentModal.classList.add('hidden');
+            });
+
+            approvePayment.addEventListener('click', () => {
+                // In a real app, update in Firebase
+                alert('Payment approved! (In a real app, this would update in Firebase)');
+                viewPaymentModal.classList.add('hidden');
+                loadPaymentsData();
+                loadDashboardData();
+            });
+
+            rejectPayment.addEventListener('click', () => {
+                // In a real app, update in Firebase
+                alert('Payment rejected! (In a real app, this would update in Firebase)');
+                viewPaymentModal.classList.add('hidden');
+                loadPaymentsData();
+                loadDashboardData();
+            });
+
+            // Settings
+            saveGeneralSettings.addEventListener('click', () => {
+                alert('Settings saved! (In a real app, this would save to Firebase)');
+            });
+
+            saveAdminCredentials.addEventListener('click', () => {
+                const newUsername = document.getElementById('adminUsernameSetting').value;
+                const newPassword = document.getElementById('adminNewPassword').value;
+                const confirmPassword = document.getElementById('adminConfirmPassword').value;
+                
+                if (newPassword && newPassword !== confirmPassword) {
+                    alert('Passwords do not match');
+                    return;
+                }
+                
+                if (newUsername) ADMIN_CREDENTIALS.username = newUsername;
+                if (newPassword) ADMIN_CREDENTIALS.password = newPassword;
+                
+                alert('Admin credentials updated!');
+            });
+        }
+
+        // Load dashboard data
+        function loadDashboardData() {
+            // In a real app, these would come from Firebase
+            totalUsers.textContent = sampleUsers.length;
+            activeTasks.textContent = sampleTasksAdmin.filter(task => task.status === 'Active').length;
+            pendingSubmissions.textContent = sampleSubmissions.filter(sub => sub.status === 'Pending').length;
+            paymentRequests.textContent = samplePayments.filter(pay => pay.status === 'Pending').length;
+            
+            // Recent users
+            recentUsersTable.innerHTML = '';
+            sampleUsers.slice(0, 5).forEach(user => {
+                const row = document.createElement('tr');
+                row.className = 'hover:bg-gray-50';
+                row.innerHTML = `
+                    <td class="py-2">${user.name}</td>
+                    <td class="py-2">${user.email}</td>
+                    <td class="py-2">${user.joined}</td>
+                `;
+                recentUsersTable.appendChild(row);
+            });
+            
+            // Recent submissions
+            recentSubmissionsTable.innerHTML = '';
+            sampleSubmissions.slice(0, 5).forEach(sub => {
+                const row = document.createElement('tr');
+                row.className = 'hover:bg-gray-50';
+                row.innerHTML = `
+                    <td class="py-2">${sub.userName}</td>
+                    <td class="py-2">${sub.taskTitle}</td>
+                    <td class="py-2">
+                        <span class="px-2 py-1 rounded-full text-xs ${
+                            sub.status === 'Approved' ? 'bg-green-100 text-green-800' : 
+                            sub.status === 'Rejected' ? 'bg-red-100 text-red-800' : 'bg-yellow-100 text-yellow-800'
+                        }">${sub.status}</span>
+                    </td>
+                `;
+                recentSubmissionsTable.appendChild(row);
+            });
+        }
+
+        // Load users data
+        function loadUsersData() {
+            usersTableBody.innerHTML = '';
+            sampleUsers.forEach(user => {
+                const row = document.createElement('tr');
+                row.className = 'hover:bg-gray-50';
+                row.innerHTML = `
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="flex items-center">
+                            <div class="flex-shrink-0 h-10 w-10 bg-blue-500 rounded-full flex items-center justify-center text-white font-medium">
+                                ${user.name.charAt(0)}
+                            </div>
+                            <div class="ml-4">
+                                <div class="text-sm font-medium text-gray-900">${user.name}</div>
+                                <div class="text-sm text-gray-500">${user.email}</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900">$${user.balance.toFixed(2)}</div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900">${user.tasksCompleted}</div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        ${user.joined}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                        <a href="#" class="text-blue-600 hover:text-blue-900 mr-3">Edit</a>
+                        <a href="#" class="text-red-600 hover:text-red-900">Ban</a>
+                    </td>
+                `;
+                usersTableBody.appendChild(row);
+            });
+        }
+
+        // Load tasks data
+        function loadTasksData() {
+            tasksTableBody.innerHTML = '';
+            sampleTasksAdmin.forEach(task => {
+                const row = document.createElement('tr');
+                row.className = 'hover:bg-gray-50';
+                row.innerHTML = `
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="text-sm font-medium text-gray-900">${task.title}</div>
+                        <div class="text-sm text-gray-500">${task.category}</div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900">$${task.reward.toFixed(2)}</div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <span class="px-2 py-1 rounded-full text-xs ${
+                            task.status === 'Active' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'
+                        }">${task.status}</span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        ${task.created}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                        <a href="#" class="text-blue-600 hover:text-blue-900 mr-3">Edit</a>
+                        <a href="#" class="text-red-600 hover:text-red-900">Delete</a>
+                    </td>
+                `;
+                tasksTableBody.appendChild(row);
+            });
+        }
+
+        // Load submissions data
+        function loadSubmissionsData() {
+            submissionsTableBody.innerHTML = '';
+            sampleSubmissions.forEach(sub => {
+                const row = document.createElement('tr');
+                row.className = 'hover:bg-gray-50';
+                row.innerHTML = `
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="flex items-center">
+                            <div class="flex-shrink-0 h-10 w-10 bg-blue-500 rounded-full flex items-center justify-center text-white font-medium">
+                                ${sub.userName.charAt(0)}
+                            </div>
+                            <div class="ml-4">
+                                <div class="text-sm font-medium text-gray-900">${sub.userName}</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900">${sub.taskTitle}</div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        ${sub.submitted}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <span class="px-2 py-1 rounded-full text-xs ${
+                            sub.status === 'Approved' ? 'bg-green-100 text-green-800' : 
+                            sub.status === 'Rejected' ? 'bg-red-100 text-red-800' : 'bg-yellow-100 text-yellow-800'
+                        }">${sub.status}</span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                        <button class="view-submission text-blue-600 hover:text-blue-900" data-submission-id="${sub.id}">Review</button>
+                    </td>
+                `;
+                submissionsTableBody.appendChild(row);
+            });
+        }
+
+        // Load payments data
+        function loadPaymentsData() {
+            paymentsTableBody.innerHTML = '';
+            samplePayments.forEach(pay => {
+                const row = document.createElement('tr');
+                row.className = 'hover:bg-gray-50';
+                row.innerHTML = `
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="flex items-center">
+                            <div class="flex-shrink-0 h-10 w-10 bg-blue-500 rounded-full flex items-center justify-center text-white font-medium">
+                                ${pay.userName.charAt(0)}
+                            </div>
+                            <div class="ml-4">
+                                <div class="text-sm font-medium text-gray-900">${pay.userName}</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900">$${pay.amount.toFixed(2)}</div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900">${pay.method}</div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        ${pay.requested}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <span class="px-2 py-1 rounded-full text-xs ${
+                            pay.status === 'Processed' ? 'bg-green-100 text-green-800' : 
+                            pay.status === 'Rejected' ? 'bg-red-100 text-red-800' : 'bg-yellow-100 text-yellow-800'
+                        }">${pay.status}</span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                        <button class="view-payment text-blue-600 hover:text-blue-900" data-payment-id="${pay.id}">Process</button>
+                    </td>
+                `;
+                paymentsTableBody.appendChild(row);
+            });
+        }
+
+        // Open submission modal
+        function openSubmissionModal(submissionId) {
+            const submission = sampleSubmissions.find(sub => sub.id === submissionId);
+            if (!submission) return;
+            
+            const user = sampleUsers.find(u => u.id === submission.userId);
+            const task = sampleTasksAdmin.find(t => t.id === submission.taskId);
+            
+            document.getElementById('submissionUserName').textContent = submission.userName;
+            document.getElementById('submissionUserEmail').textContent = user ? user.email : 'N/A';
+            document.getElementById('submissionTaskTitle').textContent = submission.taskTitle;
+            document.getElementById('submissionTaskReward').textContent = task ? `Reward: $${task.reward.toFixed(2)}` : '';
+            
+            // In a real app, this would show the actual proof from Firebase Storage
+            document.getElementById('submissionProofImage').src = 'https://via.placeholder.com/600x400?text=Submission+Proof';
+            document.getElementById('submissionProofText').textContent = 'User submitted proof of task completion';
+            
+            viewSubmissionModal.classList.remove('hidden');
+        }
+
+        // Open payment modal
+        function openPaymentModal(paymentId) {
+            const payment = samplePayments.find(pay => pay.id === paymentId);
+            if (!payment) return;
+            
+            const user = sampleUsers.find(u => u.id === payment.userId);
+            
+            document.getElementById('paymentUserName').textContent = payment.userName;
+            document.getElementById('paymentUserEmail').textContent = user ? user.email : 'N/A';
+            document.getElementById('paymentAmount').textContent = payment.amount.toFixed(2);
+            document.getElementById('paymentMethod').textContent = payment.method;
+            document.getElementById('paymentAccount').textContent = payment.account;
+            
+            viewPaymentModal.classList.remove('hidden');
+        }
+
+        // Initialize when DOM is loaded
+        document.addEventListener('DOMContentLoaded', initAdminPanel);
+    </script>
+</body>
+</html>
